@@ -1,0 +1,32 @@
+# Ignore .NET build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# VS Code settings
+.vscode/
+
+# Docker-related
+Dockerfile
+.dockerignore
+
+# Git
+.git/
+.gitignore
+
+# Secrets (never copy into Docker image!)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.json
+
+# Others
+.vs/
+*.db

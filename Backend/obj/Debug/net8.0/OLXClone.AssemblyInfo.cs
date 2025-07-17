@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OLXClone")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8da2c187857ab43606f9bfd28a6c9aabcd0ecd7d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d8deeaf16bc91be401e7847dde1c7e9637299170")]
 [assembly: System.Reflection.AssemblyProductAttribute("OLXClone")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OLXClone")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
