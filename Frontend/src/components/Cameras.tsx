@@ -1,0 +1,223 @@
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { 
+  Container, Title, RecommendationsGrid, RecommendationCard, 
+  ImageWrapper, ContentWrapper, Price, Description, 
+  Location, DatePosted, FavoriteIcon 
+} from '../styles/categoryroutes';
+import { FaHeart } from 'react-icons/fa';
+import Navbar from './Navbar';
+import Footer from './Footer';
+import Login from './Login';
+import SideNavbar from './SideNavbar';
+import { Product } from "../types/Product";
+import SortProducts from './SortProduct'; // Import the SortProducts component
+
+const Cameras = () => {
+  const [cameras, setCameras] = useState<Product[]>([]); // All cameras data
+  const [filteredCameras, setFilteredCameras] = useState<Product[]>([]); // Cameras filtered by location or productId
+  const [likedItems, setLikedItems] = useState<number[]>([]);
+  const [isLoginVisible, setLoginVisible] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const location = useLocation(); // Get location from router
+  const productId = location.state?.productId; // Extract productId from location.state
+  const navigate = useNavigate();
+  const [isAuthenticated, setAuthenticated] = useState<boolean>(false); // Track authentication status
+
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return "N/A"; // Return a placeholder if the date is undefined
+  
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+    const day = String(date.getDate()).padStart(2, '0'); // Pad with leading zero if needed
+    return `${year}-${month}-${day}`;
+  };
+
+  // Fetch cameras data on component mount
+  useEffect(() => {
+    const fetchCameras = async () => {
+      try {
+        const response = await fetch(`https://localhost:7048/api/Product?category=Cameras`);
+        const data: Product[] = await response.json();
+        
+        setCameras(data);
+        
+        // Initialize liked items based on API data
+        const liked = data.filter(camera => camera.isLiked).map(camera => camera.id);
+        setLikedItems(liked);
+
+        // If a productId is passed, filter to show only that product
+        if (productId) {
+          const filteredById = data.filter((camera) => camera.id === productId);
+          setFilteredCameras(filteredById);
+        } else {
+          setFilteredCameras(data); // Set initial filtered cameras to show all cameras
+        }
+      } catch (error) {
+        console.error('Error fetching cameras data:', error);
+      }
+    };
+    fetchCameras();
+  }, [productId]); // Re-run the effect if productId changes
+
+  // Check authentication status based on token
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setAuthenticated(true); // Assume user is authenticated if a token exists
+    }
+  }, []);
+
+  // Toggle like functionality
+  const toggleLike = async (id: number) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setLoginVisible(true);
+      return;
+    }
+    
+    const isCurrentlyLiked = likedItems.includes(id); // Check if the item is already liked
+
+    try {
+      // Optimistically update the UI
+      setLikedItems((prev) =>
+        isCurrentlyLiked ? prev.filter((item) => item !== id) : [...prev, id]
+      );
+
+      // Send PATCH request to the backend to update like status
+      const response = await fetch(
+        `https://localhost:7048/api/Product/${id}/like`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Include the token in the request
+          },
+          body: JSON.stringify(!isCurrentlyLiked), // Send the new like status
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to update like status for product ${id}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Response data:", responseData);
+    } catch (error) {
+      console.error("Error updating like status:", error);
+
+      // Revert UI change in case of an error
+      setLikedItems((prev) =>
+        isCurrentlyLiked ? [...prev, id] : prev.filter((item) => item !== id)
+      );
+    }
+  };
+
+  // Handle location change and filter cameras based on the selected location
+  const handleLocationChange = (location: string) => {
+    setSelectedLocation(location);
+
+    if (location === '') {
+      // If no location selected, reset to all cameras
+      setFilteredCameras(cameras);
+    } else {
+      // Filter cameras by selected location
+      const filteredByLocation = cameras.filter(camera => camera.location.toLowerCase() === location.toLowerCase());
+      setFilteredCameras(filteredByLocation);
+    }
+  };
+
+  // Show the login modal when "Login" is clicked
+  const handleLoginClick = () => {
+    setLoginVisible(true);
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); // Clear the token from local storage
+    setAuthenticated(false); // Update the authentication state
+  };
+
+  // Close the login modal
+  const handleCloseLogin = () => {
+    setLoginVisible(false);
+  };
+
+  // Handle successful login
+  const handleLoginSuccess = (token: string) => {
+    localStorage.setItem('authToken', token); // Store the token in localStorage
+    setAuthenticated(true); // Update the authenticated state on successful login
+    setLoginVisible(false); // Close the login modal after successful login
+  };
+
+  // Handle search results from the Navbar and update the filtered cameras list
+  const handleSearchResults = (results: Product[]) => {
+    setFilteredCameras(results); // Update displayed cameras to search results
+  };
+
+  const handleCardClick = (id: number) => {
+    if (!isAuthenticated) {
+      setLoginVisible(true); // Show login popup if not authenticated
+    } else {
+      navigate(`/product/${id}`); // Navigating to the ProductDisplay page with the product ID
+    }
+  };
+
+  return (
+    <>
+      <Navbar 
+        onLoginClick={handleLoginClick}  
+        onLogoutClick={handleLogout}
+        onLocationSelect={handleLocationChange}
+        onSearchResults={handleSearchResults}
+      />
+      {/* Sorting Dropdown */}
+      <SortProducts 
+          products={cameras} 
+          setFilteredProducts={setFilteredCameras} // Pass props to SortProducts
+        />
+
+      <Title>Buy & Sell Cameras</Title>
+      
+      <Container>
+        <SideNavbar products={cameras} setFilteredProducts={setFilteredCameras} /> 
+        <RecommendationsGrid>
+          {filteredCameras.map((camera) => (
+            <RecommendationCard key={camera.id} onClick={() => handleCardClick(camera.id)}>
+            <ImageWrapper>
+              <img src={camera.imageUrl} alt={camera.title} />
+              <FavoriteIcon 
+                $isLiked={likedItems.includes(camera.id)} 
+                isAuthenticated={isAuthenticated}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click event
+                  toggleLike(camera.id);
+                }}
+              >
+                <FaHeart />
+              </FavoriteIcon>
+            </ImageWrapper>
+            <ContentWrapper>
+              <Description>{camera.title}</Description>
+              <Price>₹{camera.price}</Price>
+              <Location>{camera.location}</Location>
+              <DatePosted>{formatDate(camera.datePosted)}</DatePosted>
+            </ContentWrapper>
+          </RecommendationCard>
+          ))}
+        </RecommendationsGrid>
+      </Container>
+      <Footer />
+      
+      {/* Login Modal */}
+      {isLoginVisible && (
+        <Login 
+          onClose={handleCloseLogin}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      )}
+    </>
+  );
+}
+
+export default Cameras;

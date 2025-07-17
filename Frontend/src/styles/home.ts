@@ -1,0 +1,227 @@
+import styled from "styled-components";
+
+export const Overlay = styled.div<{ visible: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2); // Dim effect
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  z-index: 999; // Ensure it's on top
+`;
+// Container for the entire page
+export const Container = styled.div`
+  background-color: #f8f8f8;
+  padding: 20px;
+`;
+
+// Section for fresh recommendations
+export const FreshRecommendations = styled.div`
+  margin-top: 20px;
+`;
+
+// Heading for fresh recommendations
+export const RecommendationsHeading = styled.h2`
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+`;
+
+// Grid layout for recommendation cards
+export const RecommendationsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Fixed to 4 columns */
+  gap: 15px;
+  justify-items: stretch; /* Ensure all items stretch to fill the grid cell */
+`;
+
+// Card component for each recommendation
+export const RecommendationCard = styled.div`
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+`;
+
+// Image wrapper for recommendation card
+export const ImageWrapper = styled.div`
+  width: 96%;
+  margin-top:7px;
+  margin-left:6px;
+  height: 180px;
+  background-color: #eaeaea;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+// Content inside each recommendation card
+export const ContentWrapper = styled.div`
+  padding: 10px 15px;
+`;
+
+// Price text inside recommendation card
+export const Price = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 5px 0;
+`;
+
+// Description text inside recommendation card
+export const Description = styled.p`
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+`;
+
+// Location text inside recommendation card
+export const Location = styled.p`
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 5px;
+`;
+
+// Date posted text inside recommendation card
+export const DatePosted = styled.p`
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+`;
+
+// Favorite (heart) icon component
+export const FavoriteIcon = styled.div<{ $isLiked: boolean; isAuthenticated: boolean }>`
+  color: ${({ $isLiked, isAuthenticated }) => (isAuthenticated && $isLiked ? "red" : "white")}; // Red if liked and authenticated, white otherwise
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5em; // Adjust the size as needed
+`;
+
+// App download image component
+export const AppDownloadImage = styled.img`
+  width: 100%;
+  margin-top: 20px;
+`;
+
+// Footer container for all sections
+export const FooterContainer = styled.div`
+  background-color:#E6E6E6;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding: 20px;
+  height:200px;
+ 
+`;
+
+// Footer section
+export const FooterSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 80px;
+`;
+
+// Footer section title
+export const FooterTitle = styled.h4`
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: -10px;
+  margin-bottom: 1px;
+  color:#002244;
+  
+`;
+
+// Footer link (text) component
+export const FooterLink = styled.a`
+  font-size: 13px;
+  color: #666;
+  margin: 10px 3px -10px;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    color: #333;
+  }
+`;
+
+// Wrapper for social media icons
+export const SocialIconWrapper = styled.div`
+  display: flex;
+  gap: 10px; /* Space between icons */
+  margin-bottom: 10px;
+`;
+
+// Wrapper for app store icons
+export const AppIconWrapper = styled.div`
+  display: flex;
+  gap: 10px; /* Space between icons */
+  margin-top: 10px;
+`;
+
+export const SoldProductsSection = styled.div`
+  margin-top: 40px; // Adjust as needed
+`;
+
+export const SoldProductsHeading = styled.h2`
+  font-size: 24px; // Adjust as needed
+  margin-bottom: 20px; // Adjust as needed
+`;
+
+
+// Footer bottom container for the logos and text
+export const FooterBottomContainer = styled.div`
+  background-color: #002e2e;
+  padding: 80px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+// Container for the logos
+export const LogosContainer = styled.div`
+  display: flex;
+  margin-top:-20px;
+  justify-content: center;
+  gap: 40px;  // Space between the logos
+
+  img {
+    height: 70px;  // Adjust the height of the logos as needed
+  }
+`;
+
+
+// Bottom text (Help, Sitemap, Rights)
+export const FooterBottomText = styled.div`
+  
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space between left and right items */
+  width: 100%; /* Full width to allow positioning */
+  max-width: 1200px; /* Optional: limit width for larger screens */
+  padding: 0 10px; /* Add some padding to the sides */
+  margin-bottom: -60px; /* Space above */
+`;
+
+// Links for Help and Sitemap
+export const FooterLinks = styled.a`
+color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
+// Text for the rights information
+export const RightsText = styled.p`
+  font-size: 12px;
+  color: #ffffff;
+  margin: 0; /* Remove margin to align text */
+`;
+

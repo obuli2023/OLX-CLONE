@@ -1,0 +1,6 @@
+@OLXClone_HostAddress = http://localhost:5265
+
+GET {{OLXClone_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
