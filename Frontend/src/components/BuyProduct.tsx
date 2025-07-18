@@ -17,6 +17,7 @@ import {
   Info
   // New styled component for input fields
 } from '../styles/buyproduct'; // Import styled components for BuyProduct
+import API_BASE_URL from "../config";
 
 interface BuyProductProps {
   onClose: () => void;
@@ -38,7 +39,7 @@ const BuyProduct = ({ onClose, product }: BuyProductProps) => {
   
       try {
         // Update product's isSold state to true
-        const response = await fetch(`https://localhost:7048/api/Product/${product.id}/sell`, {
+        const response = await fetch(`${API_BASE_URL}/Product/${product.id}/sell`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

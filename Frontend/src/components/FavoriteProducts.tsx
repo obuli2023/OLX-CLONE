@@ -18,8 +18,9 @@ import Login from "./Login";
 import Footer from "./Footer";
 import { Product } from "../types/Product"; // Import Product type
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
-const FavoriteProducts: React.FC = () => {
+const FavoriteProducts = () => {
   const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [filteredRecommendations, setFilteredRecommendations] = useState<Product[]>([]);
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const FavoriteProducts: React.FC = () => {
     // Fetch all products from the API
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product`);
+        const response = await fetch(`${API_BASE_URL}/Product`);
         const data: Product[] = await response.json();
         setRecommendations(data);
 
@@ -78,7 +79,7 @@ const FavoriteProducts: React.FC = () => {
       setFilteredRecommendations((prev) => prev.filter((item) => item.id !== id));
 
       // Send PATCH request to the backend to update the like status
-      const response = await fetch(`https://localhost:7048/api/Product/${id}/like`, {
+      const response = await fetch(`${API_BASE_URL}/Product/${id}/like`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

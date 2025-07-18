@@ -11,7 +11,8 @@ import Footer from './Footer';
 import Login from './Login';
 import SideNavbar from './SideNavbar';
 import { Product } from "../types/Product";
-import SortProducts from './SortProduct'; // Import the SortProducts component
+import SortProducts from './SortProduct'; 
+import API_BASE_URL from '../config';
 
 const Cameras = () => {
   const [cameras, setCameras] = useState<Product[]>([]); // All cameras data
@@ -38,7 +39,7 @@ const Cameras = () => {
   useEffect(() => {
     const fetchCameras = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product?category=Cameras`);
+        const response = await fetch(`${API_BASE_URL}/Product?category=Cameras`);
         const data: Product[] = await response.json();
         
         setCameras(data);
@@ -87,7 +88,7 @@ const Cameras = () => {
 
       // Send PATCH request to the backend to update like status
       const response = await fetch(
-        `https://localhost:7048/api/Product/${id}/like`,
+        `${API_BASE_URL}/Product/${id}/like`,
         {
           method: "PATCH",
           headers: {

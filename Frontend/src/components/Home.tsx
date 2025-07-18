@@ -23,6 +23,7 @@ import appdownload from "../images/appdownload.png";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../types/Product";
+import API_BASE_URL from "../config";
 
 const HomePage = () => {
   const [recommendations, setRecommendations] = useState<Product[]>([]);
@@ -49,7 +50,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product`);
+        const response = await fetch(`${API_BASE_URL}/Product`);
         const data: Product[] = await response.json();
         setRecommendations(data);
         setFilteredRecommendations(data);
@@ -108,7 +109,7 @@ const HomePage = () => {
       );
 
       const response = await fetch(
-        `https://localhost:7048/api/Product/${id}/like`,
+        `${API_BASE_URL}/Product/${id}/like`,
         {
           method: "PATCH",
           headers: {

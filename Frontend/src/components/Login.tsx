@@ -15,7 +15,8 @@ import {
   CarouselImage,
   DotsContainer,
   Dot,
-} from "../styles/login"; // Assuming you've defined these in your styled components
+} from "../styles/login"; 
+import API_BASE_URL from "../config";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -61,8 +62,8 @@ const Login = ({ onClose, onLoginSuccess }: LoginProps) => {
     e.preventDefault();
 
     const url = isRegister
-      ? `https://localhost:7048/api/User/register`
-      : `https://localhost:7048/api/User/login`;
+      ? `${API_BASE_URL}/User/register`
+      : `${API_BASE_URL}/User/login`;
 
     const body = JSON.stringify(
       isRegister ? { email, password, role } : { email, password }

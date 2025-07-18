@@ -11,7 +11,8 @@ import Footer from './Footer';
 import Login from './Login';
 import SideNavbar from './SideNavbar';
 import { Product } from "../types/Product";
-import SortProducts from './SortProduct'; // Import the SortProducts component
+import SortProducts from './SortProduct';
+import API_BASE_URL from '../config';
 
 const Properties = () => {
   const [properties, setProperties] = useState<Product[]>([]); // All properties data
@@ -38,7 +39,7 @@ const Properties = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product?category=Properties`); // Fetch properties from API
+        const response = await fetch(`${API_BASE_URL}/Product?category=Properties`); // Fetch properties from API
         const data: Product[] = await response.json();
         setProperties(data);
 
@@ -86,7 +87,7 @@ const Properties = () => {
 
       // Send PATCH request to the backend to update like status
       const response = await fetch(
-        `https://localhost:7048/api/Product/${id}/like`,
+        `${API_BASE_URL}/Product/${id}/like`,
         {
           method: "PATCH",
           headers: {

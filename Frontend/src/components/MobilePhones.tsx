@@ -12,6 +12,7 @@ import Login from './Login';
 import SideNavbar from './SideNavbar'; 
 import { Product } from "../types/Product";
 import SortProducts from './SortProduct'; // Import the SortProducts component
+import API_BASE_URL from '../config';
 
 const MobilePhones = () => {
   const [phones, setPhones] = useState<Product[]>([]); // All mobile phone data
@@ -38,7 +39,7 @@ const MobilePhones = () => {
   useEffect(() => {
     const fetchPhones = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product?category=Mobilephones`);
+        const response = await fetch(`${API_BASE_URL}/Product?category=Mobilephones`);
         const data: Product[] = await response.json();
         setPhones(data);
         
@@ -86,7 +87,7 @@ const MobilePhones = () => {
 
       // Send PATCH request to the backend to update like status
       const response = await fetch(
-        `https://localhost:7048/api/Product/${id}/like`,
+        `${API_BASE_URL}/Product/${id}/like`,
         {
           method: "PATCH",
           headers: {

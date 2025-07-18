@@ -33,6 +33,7 @@ import { CiLocationOn } from "react-icons/ci";
 import olx from "../images/olx.png";
 import lens from "../images/lens.png";
 import search from "../images/search.png";
+import API_BASE_URL from "../config";
 
 import Login from "./Login";
 import { Product } from "../types/Product";
@@ -65,12 +66,11 @@ const Navbar = ({
   const [isLoginVisible, setLoginVisible] = useState(false);
   const locationRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef(null); // Use ref to track the input element
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://localhost:7048/api/Product");
+        const response = await fetch(`${API_BASE_URL}/Product`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data: Product[] = await response.json();
 
@@ -377,18 +377,25 @@ const Navbar = ({
         </div>
 
         <CategoryContainer>
-          {categories.map((category) => (
-            <CategoryItem
-              key={category}
-              onClick={() => handleCategoryClick(category)}
-            >
-              {category}
-            </CategoryItem>
-          ))}
-          <CategoryItem onClick={handleFavoritesClick}>
-            Favorites
-          </CategoryItem>
-        </CategoryContainer>
+  {categories.length === 0 ? (
+    <CategoryItem>Loading categories...</CategoryItem>
+  ) : (
+    <>
+      {categories.map((category) => (
+        <CategoryItem
+          key={category}
+          onClick={() => handleCategoryClick(category)}
+        >
+          {category}
+        </CategoryItem>
+      ))}
+      <CategoryItem onClick={handleFavoritesClick}>
+        Favorites
+      </CategoryItem>
+    </>
+  )}
+</CategoryContainer>
+
 
         {isCategoryOpen && (
           <CategoryList>

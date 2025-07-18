@@ -11,7 +11,8 @@ import Footer from './Footer';
 import Login from './Login'; 
 import SideNavbar from './SideNavbar'; 
 import { Product } from "../types/Product";
-import SortProducts from './SortProduct'; // Import the SortProducts component
+import SortProducts from './SortProduct'; 
+import API_BASE_URL from '../config';
 
 const Watches = () => {
   const [watches, setWatches] = useState<Product[]>([]);
@@ -37,7 +38,7 @@ const Watches = () => {
   useEffect(() => {
     const fetchWatches = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product?category=Watches`);
+        const response = await fetch(`${API_BASE_URL}/Product?category=Watches`);
         const data: Product[] = await response.json();
         setWatches(data);
 
@@ -83,7 +84,7 @@ const Watches = () => {
 
       // Send PATCH request to the backend to update like status
       const response = await fetch(
-        `https://localhost:7048/api/Product/${id}/like`,
+        `${API_BASE_URL}/Product/${id}/like`,
         {
           method: "PATCH",
           headers: {

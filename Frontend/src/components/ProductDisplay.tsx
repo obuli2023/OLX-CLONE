@@ -27,6 +27,7 @@ import {
 import { Product } from '../types/Product';
 import Login from './Login';
 import BuyProduct from './BuyProduct'; // Import the BuyProduct component
+import API_BASE_URL from '../config';
 
 import olxuser from '../images/olxuser.png';
 import { BsCalendar4Event } from "react-icons/bs";
@@ -47,7 +48,7 @@ const ProductDisplay = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://localhost:7048/api/Product/${id}`);
+        const response = await fetch(`${API_BASE_URL}/Product/${id}`);
         const data = await response.json();
         setProduct(data);
       } catch (error) {
